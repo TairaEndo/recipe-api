@@ -31,7 +31,7 @@ class RecipesController < ApplicationController
       render json: {
         message: "Recipe creation failed!",
         required: "title, making_time, serves, ingredients, cost"
-        }, status: :not_found
+        }, status: :ok
     end
     
   end
@@ -39,7 +39,7 @@ class RecipesController < ApplicationController
   # PATCH/PUT /recipes/1 or /recipes/1.json
   def update
     if @recipe.update(recipe_params)
-      render json: { message: "Recipe successfully updated!", recipe: [@recipe] }
+      render json: { message: "Recipe Successfully updated!", recipe: [@recipe] }
     else
       render json: { message: "Recipe update failed!", required: "title, making_time, serves, ingredients, cost" }, status: :not_found
     end
@@ -50,7 +50,7 @@ class RecipesController < ApplicationController
     @recipe.destroy
     render json: { message: "Recipe was successfully removed!" }
   rescue ActiveRecord::RecordNotFound
-    render json: { message: "No Recipe found" }, status: :not_found
+    render json: { message: "No Recipe found" }, status: :ok
   end
 
   private
