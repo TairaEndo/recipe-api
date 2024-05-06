@@ -21,9 +21,8 @@ class RecipesController < ApplicationController
   def create
     @recipe = Recipe.new(recipe_params)
 
-    if @recipe.save
+    if @recipe.valid? && @recipe.save
       render json: {
-        status: 'SUCCESS',
         message: 'Recipe successfully created!',
         recipe: [@recipe]
       }, status: :ok
@@ -63,6 +62,6 @@ class RecipesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def recipe_params
-      params.require(:recipe).permit(:title, :making_time, :serves, :ingredients, :cost)
+      params.permit(:title, :making_time, :serves, :ingredients, :cost)
     end
 end
