@@ -4,14 +4,16 @@ class RecipesController < ApplicationController
   # GET /recipes or /recipes.json
   def index
     @recipes = Recipe.all
-    render json: {recipes: @recipes}
+    render json: {
+      recipes: @recipes
+    }
   end
 
   # GET /recipes/1 or /recipes/1.json
   def show
         render json: {
           'message': "Recipe details by id",
-          'recipe': @recipe,
+          'recipe': [@recipe]
         }
   end
 
@@ -20,9 +22,16 @@ class RecipesController < ApplicationController
     @recipe = Recipe.new(recipe_params)
 
     if @recipe.save
-      render json: { status: 'SUCCESS', message: 'Recipe Successfully created!', recipe: @recipe}, status: :created
+      render json: {
+        status: 'SUCCESS',
+        message: 'Recipe Successfully created!',
+        recipe: [@recipe]
+      }, status: :ok
     else
-      render json: { message: "Recipe creation failed!", required: "title, making_time, serves, ingredients, cost" }, status: :unprocessable_entity
+      render json: {
+        message: "Recipe creation failed!",
+        required: "title, making_time, serves, ingredients, cost"
+        }, status: :not_found
     end
     
   end
@@ -30,9 +39,9 @@ class RecipesController < ApplicationController
   # PATCH/PUT /recipes/1 or /recipes/1.json
   def update
     if @recipe.update(recipe_params)
-      render json: { message: "Recipe successfully updated!", recipe: @recipe }
+      render json: { message: "Recipe successfully updated!", recipe: [@recipe] }
     else
-      render json: { message: "Recipe update failed!", required: "title, making_time, serves, ingredients, cost" }, status: :unprocessable_entity
+      render json: { message: "Recipe update failed!", required: "title, making_time, serves, ingredients, cost" }, status: :not_found
     end
   end
 
